@@ -1,0 +1,1 @@
+This repository houses projects for [Free Code Camp](https://www.freecodecamp.com/).
