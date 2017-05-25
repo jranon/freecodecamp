@@ -1,0 +1,41 @@
+body {
+  background-color: black;
+}
+
+.button {
+  display: inline-block;
+  background-color: gray;
+  float: left;
+  width: 20%;
+  height: 50px;
+  margin: 10px 5px;
+  padding: 50% auto auto 50%;
+}
+
+#title {
+  font-size: 20px;
+}
+
+#calculator {
+  background-color: gray;
+  border-radius: 17px;
+  height: 500px;
+  width: 350px;
+  margin: 5% auto 5% auto;
+  padding-top: 10px;
+  padding-left: 35px;
+}
+
+#window {
+  background-color: yellow;
+  border-radius: 3px;
+  height: 60px;
+  width: 90%;
+  text-align: right;
+  font-size: 2em;
+}
+
+#full {
+  font-size: 15px;
+
+}
