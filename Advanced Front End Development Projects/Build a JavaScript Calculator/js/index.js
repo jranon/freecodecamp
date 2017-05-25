@@ -3,6 +3,7 @@ $(document).ready(function(){
   var total=0;
   var entries=[];
   var myNum;
+  var currval;
   
   //define functions
   function MyNum(value) {
@@ -56,7 +57,7 @@ $(document).ready(function(){
   });  
   // operation buttons
   $(".obutton").click(function(){
-    var currval = parseFloat($("#current").text());
+    currval = parseFloat($("#current").text());
     $("#current").text(0);
     var operation = $(this).attr("value");
     entries.push(currval);
@@ -67,10 +68,13 @@ $(document).ready(function(){
   });
   // equals button
   $(".ebutton").click(function(){
-    var i=1;
-    if (typeof entries[entries.length-1]!=="number") {
+    currval = parseFloat($("#current").text());
+    if (typeof entries[entries.length-1]!=="number"&&currval!=0) {
+      entries.push(currval);
+    } else if (currval==0) {
       entries.pop();
     }
+    var i=1;
     while (i<entries.length) {
       switch (entries[i]) {
         case "plus":
@@ -86,14 +90,17 @@ $(document).ready(function(){
           i++;
           break;
         case "multiply":
-          myNum.divide(entries[i+1]);
+          myNum.multiply(entries[i+1]);
           i++;
           break;
         default:
           i++;
           break;
       }
-    } 
-    console.log(myNum._val);
+    }
+    total+=myNum._val;
+    $("#current").text(total);
+    entries=[];
+    myNum=new MyNum(total);
   });
 });
