@@ -1,9 +1,24 @@
 $(document).ready(function(){
   // define variables
-  var total=0;
-  var entries=[];
-  var myNum;
-  var currval;
+    var entries=[];
+    var myNum;
+    var currval;
+    var storedval;
+    var total=0;
+  
+  function init() {
+    entries=[];
+    myNum;
+    currval;
+    storedval;
+    total=0;
+    
+    // set initial window value
+    $("#current").text(total);
+    $("#full").text(0);
+  }
+  
+  init();
   
   //define functions
   function MyNum(value) {
@@ -31,30 +46,31 @@ $(document).ready(function(){
   }
   
   // page manipulation and interactions
-  // set initial window value
-  $("#current").text(total);
+  
+  
   // clear buttons
   $(".cbutton").click(function(){
-    
     if ($(this).attr("value")==="ac") {
-      entries = [];
-      alert(entries);
+      init();
     } else if ($(this).attr("value")==="ce"&&$("#current").text()==0) {
       entries.pop();
-      alert(entries);
     }
     $("#current").text(0);
   });
+  
   // number buttons
   $(".nbutton").click(function(){
     var value = $(this).attr("value");
-    var current=$("#current").text();
-    if (current==0) {
+    var current = $("#current").text();
+    if ($("#current").text()==0||(total>0&&entries.length<1)) {
       $("#current").text(value);
     } else {
       $("#current").text(current+''+value);
-    } 
-  });  
+    }
+    current = $("#current").text();
+    $("#full").text(entries.join(' ')+' '+current);
+  });
+  
   // operation buttons
   $(".obutton").click(function(){
     currval = parseFloat($("#current").text());
@@ -64,6 +80,17 @@ $(document).ready(function(){
     entries.push(operation);
     if (myNum===undefined&&currval!=0) {
       myNum=new MyNum(currval);
+    }
+    storedval=currval;
+    $("#full").text(entries.join(' '));
+  });
+  
+  // percent button
+  $(".pbutton").click(function(){
+    if (storedval!=="undefined") {
+      currval = parseFloat($("#current").text());
+      currval = storedval*(currval/100);
+      $("#current").text(currval);
     }
   });
   // equals button
@@ -77,19 +104,19 @@ $(document).ready(function(){
     var i=1;
     while (i<entries.length) {
       switch (entries[i]) {
-        case "plus":
+        case "+":
           myNum.add(entries[i+1]);
           i++;
           break;
-        case "subtract":
+        case "-":
           myNum.subtract(entries[i+1]);
           i++;
           break;
-        case "divide":
+        case "÷":
           myNum.divide(entries[i+1]);
           i++;
           break;
-        case "multiply":
+        case "x":
           myNum.multiply(entries[i+1]);
           i++;
           break;
@@ -98,9 +125,10 @@ $(document).ready(function(){
           break;
       }
     }
+    init();
     total+=myNum._val;
     $("#current").text(total);
-    entries=[];
-    myNum=new MyNum(total);
   });
+  
+  e.preventDefault();
 });
