@@ -1,0 +1,84 @@
+body {
+  background-color: #7B747D;
+  font-family: 'Press Start 2P', cursive;
+}
+
+a:link, a:hover, a:visited {
+  color: white;
+  text-decoration: underline;
+}
+
+.container {
+  font-size: 20px;
+  background-color: #5E1875;
+  color: white;
+  text-align: center;
+  width: 75%;
+  min-width: 735px;
+  padding-top: 10px;
+  }
+
+.streamerstats {
+  min-width: 715px;
+  text-align: left;
+  padding-top: 10px
+}
+
+.streamer {
+  height: 80px;
+  padding: 0px 10px auto 0;
+  border-style:solid;
+  border-width: 2px;
+  border-color: #000000;
+  margin-bottom: 5px;
+}
+
+.ppic {
+  height: 76px;
+  width: 80px; 
+}
+
+.pic {
+  width:80px;
+  height: 80px;
+  float: left;
+  display: inline-block;
+}
+
+.status {
+  height: 80px;
+  padding-left: 15px;
+  padding-top: 16px;
+  float: left;
+  display: inline-block;
+  overflow:hidden;
+}
+
+.status {
+  font-size: 13px;
+}
+
+.online {
+  background-color: green;
+}
+
+.offline, .dne {
+  text-align: center;
+  font-size: 15px;
+  background-color: #3B004E;
+  color: #7B747D;
+  padding-top: 7px;
+}
+
+.dne {
+  background-color: #17121C;
+  color: #85000D;
+}
+
+.frownyface {
+  font-size:30px;
+}
+
+.streamtitle {
+  font-size:10px;
+}

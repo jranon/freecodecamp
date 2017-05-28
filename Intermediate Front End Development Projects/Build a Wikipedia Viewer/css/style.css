@@ -1,0 +1,32 @@
+body {background-color:#1D231B; font-size: 30px;}
+
+.container {background-color: #D7E8D1; width: 60%; text-align: center;}
+
+a:link, a:visited, a:active {color:#1E261C; text-decoration: underline;}
+
+.results {
+  /*houses results*/
+  border-style: solid;
+  border-color: #768D6E;
+  border-radius: 3px;
+  border-width: 1px;
+  background-color: #768D6E;
+  font-size: 20px;
+  text-align: left;
+}
+
+.results a:link, a:hover, a:visited {
+  color: #1E261C;
+}
+
+.result {
+  /*houses each result's attributes*/
+  color: #1D231B;
+  font-size: 16px;
+  padding: 8px 20px 8px 20px;
+}
+
+.extraction {
+  padding-left:8px;
+  font-size: 13px;
+}

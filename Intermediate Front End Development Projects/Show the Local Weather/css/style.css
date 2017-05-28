@@ -1,0 +1,15 @@
+body {background-color: black; background-size:cover; color:white;font-size:30px;}
+
+button, button:hover, button:focus {background-color:transparent;border:none;outline:none;}
+
+a, a:hover, a:focus, a:visited {color:white;text-decoration:underline;}
+
+#
+
+.title {font-size: 60px;margin-bottom:0;}
+
+.apicredit {font-size: 10px;padding-top:0;}
+
+.container {width:60%;height:100%;text-align:center;}
+
+.font {font-family: 'Varela Round', sans-serif;}
