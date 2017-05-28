@@ -1,3 +1,3 @@
-A Pen created at CodePen.io. You can find this one at http://codepen.io/jesser702/pen/EWmbOw.
+Codepen - http://codepen.io/jesser702/pen/EWmbOw.
 
- 
+Challenge here - https://www.freecodecamp.com/challenges/use-the-twitchtv-json-api 

@@ -1,3 +1,3 @@
-A Pen created at CodePen.io. You can find this one at http://codepen.io/jesser702/pen/dNbYme.
+Codepen - http://codepen.io/jesser702/pen/dNbYme.
 
- 
+Challenge here - https://www.freecodecamp.com/challenges/build-a-random-quote-machine
