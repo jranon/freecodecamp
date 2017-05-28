@@ -9,3 +9,5 @@ Challenge here - https://www.freecodecamp.com/challenges/build-a-javascript-calc
 2.1 Figured out what I was doing wrong from update 2.  Equals button was not adding current value to entries array.  Need to fix functions as hitting the equals button then trying to add doubles the result of the first equals button total.  Ex: 10+20=21,+10=52. <- should be 31.
 
 3. Calculator is functional.  Added function for percent button, handled passing of totals through equals operation so that it can be immediately operated on, or it can be replaced with a different number to start a new equation.  Added display of full equation that updates as numbers and operations are entered.  Will have to work on aesthetic later (i.e. long + key, getting both current number and full equation in the display window).
+
+4.  Changed calculator appearance, added button response.  + button was elongated.  Enlarged window and full equation displays.  AC and CE buttons work as they should.  Spent an especially long time on the CE button functionality logic.

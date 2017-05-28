@@ -1,70 +1,134 @@
 $(document).ready(function(){
   // define variables
-    var entries=[];
-    var myNum;
-    var currval;
-    var storedval;
-    var total=0;
+  var entries;
+  var myNum;
+  var currval;
+  var storedval;
+  var total;
+  var lasttotal;
   
+  // initializer
   function init() {
     entries=[];
-    myNum;
-    currval;
-    storedval;
+    myNum=undefined;
+    currval=undefined;
+    storedval=undefined;
     total=0;
     
-    // set initial window value
-    $("#current").text(total);
+  // set initial window displays
+    $("#current").text(0);
     $("#full").text(0);
   }
   
+  //initialize
   init();
   
-  //define functions
+  //test here
+  
+  //define math functions
   function MyNum(value) {
     this._val = value;
   }
   
   MyNum.prototype.add = function(addn) {
-      this._val+=addn;
+    this._val+=addn;
     return this;
   }
   
   MyNum.prototype.subtract = function(subn) {
-      this._val-=subn;
+    this._val-=subn;
     return this;
   }
   
   MyNum.prototype.divide = function(divn) {
-    this._val/=divn;
+    this._val=this._val/divn;
     return this;
   }
   
   MyNum.prototype.multiply = function(multn) {
-    this._val*=multn;
+    this._val=this._val*multn;
     return this;
   }
   
-  // page manipulation and interactions
-  
+  // button pushes
+  $(".button").mousedown(function() {
+    $(this).addClass("pressed");
+  });
+  $(".button").mouseup(function() {
+    $(this).removeClass("pressed");
+  });
+  $(".button").mouseout(function() {
+    $(this).removeClass("pressed");
+  });
   
   // clear buttons
   $(".cbutton").click(function(){
+    // ac
     if ($(this).attr("value")==="ac") {
       init();
-    } else if ($(this).attr("value")==="ce"&&$("#current").text()==0) {
-      entries.pop();
+      lasttotal=undefined;
+    // ce
+    /*  ce button
+      if entries length is 1 or less, initialize
+      else if current is not zero,
+        if typeof last entry is an operation, zero current, full = entries +' '+0
+        else typeof if last entry is a number 
+          if last entry is not zero, set last entry to 0, full = entries
+          else if last entry is zero, pop last entry, full = entries +' '+0
+      else typeof if current is zero,
+        if last entry is an operation, pop end of entries, set current to last entry, set full to entries 
+        if last entry is a number, pop end of entries, set full to entries +' ' + 0
+    */  
+    } else if ($(this).attr("value")==="ce") {
+      if (entries.length<=1||entries==[]) {
+        init();
+        lasttotal=undefined;
+      } else if ($("#current").text()!=0) {
+        if (typeof entries[entries.length-1]!="number") { /*dostuff*/ 
+          $("#current").text(0);
+          $("#full").text(entries.join(' ')+' '+0);
+        }
+        else if (typeof entries[entries.length-1]=="number") {
+          if (entries[entries.length-1]!=0) {/*dostuff*/
+            entries[entries.length-1]=0;
+            $("#current").text(0);
+            $("#full").text(entries.join(' '));
+          }
+          else if (entries[entries.length-1]==0) {/*dostuff*/
+            entries.pop();
+            $("#current").text(0);
+            $("#full").text(entries.join(' ')+' '+0);
+          }
+        }
+      } else if ($("#current").text()==0) {
+        if (typeof entries[entries.length-1]=="number") {
+          if (entries[entries.length-1]!=0) {/*dostuff*/
+            entries[entries.length-1]=0;
+            $("#current").text(0);
+            $("#full").text(entries.join(' '));
+          } else {
+            entries.pop();
+            entries.pop();
+            $("#current").text(entries[entries.length-1]);
+            $("#full").text(entries.join(' '));
+          }
+        } else if (typeof entries[entries.length-1]!="number") {
+          alert('current is 0, last entry is not a number');
+          entries.pop();
+          $("#current").text(entries[entries.length-1]);
+          $("#full").text(entries.join(' '));
+        }
+      }
     }
-    $("#current").text(0);
   });
   
   // number buttons
   $(".nbutton").click(function(){
     var value = $(this).attr("value");
     var current = $("#current").text();
-    if ($("#current").text()==0||(total>0&&entries.length<1)) {
+    if ($("#current").text()==0&&$("#current").text().length<2||($("#current").text()==lasttotal&&entries.length<1)) {
       $("#current").text(value);
-    } else {
+    } else if (current.length<13) {
       $("#current").text(current+''+value);
     }
     current = $("#current").text();
@@ -87,7 +151,7 @@ $(document).ready(function(){
   
   // percent button
   $(".pbutton").click(function(){
-    if (storedval!=="undefined") {
+    if (typeof storedval!="undefined") {
       currval = parseFloat($("#current").text());
       currval = storedval*(currval/100);
       $("#current").text(currval);
@@ -95,6 +159,7 @@ $(document).ready(function(){
   });
   // equals button
   $(".ebutton").click(function(){
+    total=0;
     currval = parseFloat($("#current").text());
     if (typeof entries[entries.length-1]!=="number"&&currval!=0) {
       entries.push(currval);
@@ -125,10 +190,13 @@ $(document).ready(function(){
           break;
       }
     }
+    if (myNum._val.toString().length>12) {
+      myNum._val=parseFloat(myNum._val.toString().substr(0,13));
+    }
+    lasttotal=myNum._val;
     init();
-    total+=myNum._val;
-    $("#current").text(total);
+    $("#current").text(lasttotal);
   });
   
-  e.preventDefault();
+  event.preventDefault();
 });
