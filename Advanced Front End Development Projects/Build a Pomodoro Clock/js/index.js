@@ -5,7 +5,7 @@ $(document).ready(function(){
   var st=25;
   var bt=5;
   var status=true;
-  var timing=false;
+  var timing;
   
   function setSessionDisplay() {
     $("#sessiontime").text(st);
@@ -13,6 +13,14 @@ $(document).ready(function(){
   
   function setBreakDisplay() {
     $("#breaktime").text(bt);
+  }
+  
+  function setStatus() {
+    if (!status) {
+      status=true;
+    } else {
+      status=null;
+    }
   }
   
   function setStatusDisplay() {
@@ -23,66 +31,117 @@ $(document).ready(function(){
     }
   }
   
-  function setAlarmDisplay(num) {
-    $("#alarm").text(num);
+  function setTimerStatus() {
+    if (timing) {
+      timing=null;
+      alert(timing);
+    } else {
+      timing=true;
+      alert(timing);
+    }
+  }
+  
+  function setAlarmDisplay() {
+    if (status) {
+      $("#alarm").text(st);
+    } else {
+      $("#alarm").text(bt);
+    } 
+  }
+  
+  function setTimerDisplay(val) {
+    var mm=("0" + Math.floor(val/60)).slice(-2);
+    var ss=("0" + (val%60)).slice(-2);
+    $("#alarm").text(mm+':'+ss);
   }
   
   function init() {
     setSessionDisplay();
     setBreakDisplay();
     setStatusDisplay();
-    setAlarmDisplay(st);
+    setAlarmDisplay();
   }
   
   init();
   
   // buttons
   $("button").click(function(){
-    if ($(this).attr("class")=="plus") {
-      if ($(this).parent().attr("id")=="break") {
-        bt++;
-        setBreakDisplay();
+    if (!timing) {
+      if ($(this).attr("class")=="plus") {
+        if ($(this).parent().attr("id")=="break") {
+          bt++;
+          setBreakDisplay();
+          if (!status) {
+            $("#alarm").text(bt);
+          }
+        } else {
+          st++;
+          setSessionDisplay();
+          if (status) {
+            $("#alarm").text(st);
+          }
+        }  
       } else {
-        st++;
-        setSessionDisplay();
-      }  
-    } else {
-      if ($(this).parent().attr("id")=="break") {
-        bt--;
-        setBreakDisplay();
-      } else {
-        st--;
-        setSessionDisplay();
+        if ($(this).parent().attr("id")=="break") {
+          if (bt>1) {
+            bt--;
+            setBreakDisplay();
+            if (!status) {
+              $("#alarm").text(bt);
+            }
+          }
+        } else {
+          if (st>1) {
+            st--;
+            setSessionDisplay();
+            if (status) {
+              $("#alarm").text(st);
+            }
+          }
+        }
       }
     }
   });
   
+  // timer function
+  function timer(val1, val2) {
+    var counter;
+    if (status) {
+      counter=val1;
+    } else {
+      counter=val2;
+    }
+    setTimerDisplay(counter);
+    var timetime = setInterval(timeIt, 1000);
+    function timeIt() {
+      if (counter>0) {
+        counter--;
+        setTimerDisplay(counter);
+      } else {
+        setStatus();
+        setStatusDisplay();
+        setAlarmDisplay();
+        clearInterval(timetime);
+        timer(val1, val2);
+      }
+    }
+  }
+  
   // clock
   $(".clock").click(function(){
-    var time=st;
-    if (timing) {
-      timing=false;
-      alert(timing);
+    var sTime=st*60;
+    var bTime=bt*60;
+    if (status) {
+      time=st;
     } else {
-      timing=true;
-      alert(timing);
+      time=bt;
     }
+    
+    setTimerStatus();
+    
+    
     if (timing) {
-      alert('commence timing!');
-      if (status) {
-        setInterval(function(){
-          if (time>0) {
-            time--;
-            setAlarmDisplay(time);
-          } else {
-            status=null;
-            setStatusDisplay();
-            setAlarmDisplay(bt);
-            bt--;
-            
-          }
-        },1000);
-      }
+      timer(sTime, bTime);
       /*if (status) {
         setInterval(function(){
           st--;
@@ -94,8 +153,6 @@ $(document).ready(function(){
           $("#breaktime").text(bt);
         },1000);
       }*/
-    } else {
-      alert('halt timing!');
     }
   });
   
