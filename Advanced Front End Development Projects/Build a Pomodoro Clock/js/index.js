@@ -15,8 +15,8 @@ $(document).ready(function(){
     $("#breaktime").text(bt);
   }
   
-  function setStatus() {
-    if (status===true) {
+  function setStatusDisplay() {
+    if (status) {
       $("#status").text("Session");
     } else {
       $("#status").text("Break");
@@ -30,7 +30,7 @@ $(document).ready(function(){
   function init() {
     setSessionDisplay();
     setBreakDisplay();
-    setStatus();
+    setStatusDisplay();
     setAlarmDisplay(st);
   }
   
@@ -59,6 +59,7 @@ $(document).ready(function(){
   
   // clock
   $(".clock").click(function(){
+    var time=st;
     if (timing) {
       timing=false;
       alert(timing);
@@ -66,9 +67,38 @@ $(document).ready(function(){
       timing=true;
       alert(timing);
     }
-    
-    
+    if (timing) {
+      alert('commence timing!');
+      if (status) {
+        setInterval(function(){
+          if (time>0) {
+            time--;
+            setAlarmDisplay(time);
+          } else {
+            status=null;
+            setStatusDisplay();
+            setAlarmDisplay(bt);
+            bt--;
+            
+          }
+        },1000);
+      }
+      /*if (status) {
+        setInterval(function(){
+          st--;
+          $("#sessiontime").text(st);
+        },1000);
+      } else {
+        setInterval(function(){
+          bt--;
+          $("#breaktime").text(bt);
+        },1000);
+      }*/
+    } else {
+      alert('halt timing!');
+    }
   });
+  
   /* .clock#alarm
     timer .click function 
       Set countdown starting number (timernumber) as .timerset#session*1000
