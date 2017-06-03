@@ -1,192 +1,178 @@
 $(document).ready(function(){
-  // 1000 milliseconds to 1 second
-  // 60000 milliseconds to 1 minute
-  // 600000 milliseconds to 1 hour
-  var st=25;
-  var bt=5;
-  var status=true;
-  var timing;
-  
-  function setSessionDisplay() {
-    $("#sessiontime").text(st);
-  }
-  
-  function setBreakDisplay() {
-    $("#breaktime").text(bt);
-  }
-  
-  function setStatus() {
-    if (!status) {
-      status=true;
-    } else {
-      status=null;
-    }
-  }
-  
-  function setStatusDisplay() {
-    if (status) {
-      $("#status").text("Session");
-    } else {
-      $("#status").text("Break");
-    }
-  }
-  
-  function setTimerStatus() {
-    if (timing) {
-      timing=null;
-      alert(timing);
-    } else {
-      timing=true;
-      alert(timing);
-    }
-  }
-  
-  function setAlarmDisplay() {
-    if (status) {
-      $("#alarm").text(st);
-    } else {
-      $("#alarm").text(bt);
-    } 
-  }
-  
-  function setTimerDisplay(val) {
-    var mm=("0" + Math.floor(val/60)).slice(-2);
-    var ss=("0" + (val%60)).slice(-2);
-    $("#alarm").text(mm+':'+ss);
-  }
-  
-  function init() {
-    setSessionDisplay();
-    setBreakDisplay();
-    setStatusDisplay();
-    setAlarmDisplay();
-  }
-  
-  init();
-  
-  // buttons
-  $("button").click(function(){
-    if (!timing) {
-      if ($(this).attr("class")=="plus") {
-        if ($(this).parent().attr("id")=="break") {
-          bt++;
-          setBreakDisplay();
-          if (!status) {
-            $("#alarm").text(bt);
-          }
+  //var time=new Date().getTime(); <- get time in milliseconds
+
+  var s,
+  bt=5,
+  st=25,
+  Timer = {
+	  
+	  settings: {
+      clock:$(".clock"),
+		  buttons:$(".timerset"),  //strictly for responsive design
+			sessionAdj:$(".stadj"),
+			breakAdj:$(".btadj"),
+      breakTime:$("#breaktime"),
+      sessionTime:$("#sessiontime"),
+      clockStatus:$("#clockstatus"),
+      countdown:$("#alarm"),
+      status:null,
+      timing:null,
+      countdownTime:null,
+      elapsedTime:0,
+      startTime:null,
+      stopTime:null,
+      interval:null
+	  },
+	  
+	  init: function() {
+		  s=this.settings;
+      s.breakTime.text(bt);
+      s.sessionTime.text(st);
+      Timer.setAlarm(st);
+      Timer.setStatus();
+		  this.bindUIActions();
+	  },
+	  
+	  bindUIActions: function() {
+      //adjust session length
+		  s.sessionAdj.on("click", function() {
+        var val=$(this).attr("value");
+			  Timer.setSession(val);
+		  });
+      //adjust break length
+      s.breakAdj.on("click", function() {
+        var val=$(this).attr("value");
+			  Timer.setBreak(val);
+		  });
+      //start/stop
+      s.clock.on("click", function() {
+        if (!s.timing) {
+          Timer.setStartTime();
+          Timer.setCountDown();
+          s.timing=true;
+          Timer.convert(s.countDownTime);
+          Timer.start(s.countDownTime);
         } else {
+          Timer.setStopTime();
+          Timer.stop();
+          s.timing=null;
+          Timer.setElapsed();
+        }
+      });
+      //superficials
+      s.buttons.mousedown(function() {
+        $(this).addClass("adjpressed");
+      });
+      s.buttons.mouseup(function() {
+        $(this).removeClass("adjpressed");
+      });
+      s.buttons.mouseout(function() {
+        $(this).removeClass("adjpressed");
+      });
+      
+	  },
+    
+    setSession: function(x) {
+      if (!s.timing) {
+        if (x=="plus") {
           st++;
-          setSessionDisplay();
-          if (status) {
-            $("#alarm").text(st);
-          }
-        }  
-      } else {
-        if ($(this).parent().attr("id")=="break") {
-          if (bt>1) {
-            bt--;
-            setBreakDisplay();
-            if (!status) {
-              $("#alarm").text(bt);
-            }
-          }
-        } else {
-          if (st>1) {
-            st--;
-            setSessionDisplay();
-            if (status) {
-              $("#alarm").text(st);
-            }
-          }
+        } else if (st>1) {
+          st--;
+        }
+        s.sessionTime.html(st);
+        if (s.status=="Session") {
+          s.elapsedTime=0;
+          Timer.setAlarm(st);
         }
       }
-    }
-  });
-  
-  // timer function
-  function timer(val1, val2) {
-    var counter;
-    if (status) {
-      counter=val1;
-    } else {
-      counter=val2;
-    }
-    setTimerDisplay(counter);
-    var timetime = setInterval(timeIt, 1000);
-    function timeIt() {
-      if (counter>0) {
-        counter--;
-        setTimerDisplay(counter);
-      } else {
-        setStatus();
-        setStatusDisplay();
-        setAlarmDisplay();
-        clearInterval(timetime);
-        timer(val1, val2);
-      }
-    }
-  }
-  
-  // clock
-  $(".clock").click(function(){
-    var sTime=st*60;
-    var bTime=bt*60;
-    if (status) {
-      time=st;
-    } else {
-      time=bt;
-    }
+    },
     
-    setTimerStatus();
-    
-    
-    if (timing) {
-      timer(sTime, bTime);
-      /*if (status) {
-        setInterval(function(){
-          st--;
-          $("#sessiontime").text(st);
-        },1000);
-      } else {
-        setInterval(function(){
+    setBreak: function(x) {
+      if (!s.timing) {
+        if (x=="plus") {
+          bt++;
+        } else if (bt>1) {
           bt--;
-          $("#breaktime").text(bt);
-        },1000);
-      }*/
-    }
-  });
-  
-  /* .clock#alarm
-    timer .click function 
-      Set countdown starting number (timernumber) as .timerset#session*1000
-      // convert number to mm:ss
-      var mm = ("0" + Math.floor(timernumber/60000).toString()).slice(-2);
-      if (mm<10) {
-        mm=
+        }
+        s.breakTime.html(bt); 
+        if (s.status=="Break") {
+          s.elapsedTime=0;
+          Timer.setAlarm(bt);
+        }
       }
-      var ss = ("0" + (timernumber%60000)/6000.toString()).slice(-2);
-      // set display as mm:ss
-      $()
-      set toggle functions
-        set timing to true 
-        set timing to false
-      while timernumber > 0
-        if (timing) {
-          setInterval(function(){timernumber-=1000;}, 1000);
-        } 
-      
-      
-      
-      
-  */
+    },
+    
+    start: function(x) {
+      var disp=x;
+      s.interval=setInterval(function(){
+        disp-=1000;
+        if (disp>=0) {
+          Timer.convert(disp);
+        } else {
+          Timer.stop();
+          Timer.reset();
+        }
+      }, 1000);
+    },
+    
+    stop: function() {
+      clearInterval(s.interval);
+    },
+    
+    setStatus: function() {
+      if (!s.status||s.status=="Break") {
+        s.status="Session";
+      } else {
+        s.status="Break";
+      }
+      s.clockStatus.html(s.status);
+    },
+    
+    setAlarm: function(val) {
+      s.countdown.html(val);
+    },
+    
+    setStartTime: function() {
+      var start;
+      start=new Date().getTime();
+      s.startTime=start;
+    },
+    
+    setStopTime: function() {
+      var stop;
+      stop=new Date().getTime();
+      s.stopTime=stop;
+    },
+    
+    setCountDown: function() {
+      if (s.status=="Session") {
+        s.countDownTime=(st*60000)-s.elapsedTime;
+      } else {
+        s.countDownTime=(bt*60000)-s.elapsedTime;
+      }
+    },
+    
+    convert: function(x) {
+      var mm=("0"+Math.floor(x/60000)).slice(-2);
+      var ss=("0"+Math.floor((x%60000)/1000)).slice(-2);
+      Timer.setAlarm(mm+":"+ss);
+    },
+    
+    setElapsed: function() {
+      s.elapsedTime+=(s.stopTime-s.startTime);
+    },
+    
+    reset: function() {
+      s.elapsedTime=0;
+      Timer.setStatus();
+      Timer.setCountDown();
+      s.timing=true;
+      Timer.convert(s.countDownTime);
+      Timer.start(s.countDownTime);
+    }
+    
+  };
   
-  /*function cdisplay(minutes) {
-    var time = minutes*60000;
-    setInterval(function(){alert(time+" milliseconds have passed");}, time)
-  }
-  
-  cdisplay(1);*/
-  
-  //setInterval(function(){alert("thing");}, 5000);
+  Timer.init();
   
 });

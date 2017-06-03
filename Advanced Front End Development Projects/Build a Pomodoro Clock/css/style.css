@@ -1,34 +1,91 @@
 body {
   background:black;
   color:white;
+  font-size:30px;
+  font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
 }
 
 .container {
-  width:80%;
-  background:blue;
+  width:1000px;
+  height:600px;
+  background:transparent;
+  text-align:center;
+  color:black;
 }
 
 .container div {
   display:inline-block;
-  margin:auto;
+}
+
+/*Adjustors*/
+
+.wrapper {
+  width:200px;
+  height:600px;
+  margin:0 auto;
+  position:absolute;
+  color:#cce0cc;
+  background:transparent;
 }
 
 .timerset {
-  height:200px;
-  width:200px;
-  background:green;
+  height:50%;
+  width:100%;
+  font-size:60px;
+  padding-top:90px;
 }
 
-#break {
-
+.left {
+  float:left;
+  left:0;
 }
 
-#session {
-
+.right {
+  float:right;
+  right:0;
 }
 
+.top {
+  top:0;
+}
+
+.bottom {
+  bottom:0;
+}
+  
 .clock {
-  height:400px;
-  width:400px;
-  background:red;
+  width:600px;
+  height:600px;
+  background:#550000;
+  position:relative;
+  margin:0 auto;
+  font-size:80px;
+  padding-top:175px;
+  color:#ffaaaa;
+}
+
+.header, .footer {
+  text-align:center;
+  font-size:40px;
+}
+
+.header {
+  margin-top:100px;
+}
+
+.overlay {
+  position:absolute;
+  margin-top:250px;
+}
+
+.s {
+  margin-left:50px;
+}
+
+.b {
+  margin-left:62px;
+}
+
+.adjpressed {
+  background:#1a3e00;
 }

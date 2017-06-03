@@ -13,19 +13,40 @@
 </head>
 
 <body>
-  <div class="container">
-  <!-- Set break interval -->
-  <div class="timerset" id="break">Break<br /><button class="plus">+</button><br /><span id="breaktime"></span><br /><button class="minus">-</button></div>
+  <div class="header">Pomodoro For Productivity</div>
+<div class="container">
   
-  <div class="clock"><span id="status"></span><br /><span id="alarm"></span></div>
+  <div class="wrapper left">
+    <div class="overlay b">
+      Break<br />
+      <span id="breaktime"></span>
+    </div>
+	
+    <div class="timerset top btadj" value="plus">+</div>
+    <div class="timerset bottom btadj" value="minus">-</div>
+    
+  </div>
+
+  <div class="clock">
+      <span id="clockstatus"></span><br />
+      <span id="alarm"></span>
+  </div>
   
   <!-- Set session interval -->
-  <div class="timerset" id="session">Session<br /><button class="plus">+</button><br /><span id="sessiontime"></span><br /><button class="minus">-</button></div>
-  
-  <!-- Display clock -->
-  
+  <div class="wrapper right">
+    <div class="overlay s">
+      Session<br />
+      <span id="sessiontime"></span>
+    </div>
+	
+    <div class="timerset top stadj" value="plus">+</div>
+    <div class="timerset bottom stadj" value="minus">-</div>
+    
+  </div>
 
 </div>
+
+<div class="footer">By <a href="https://github.com/jranon" target="_blank">Jranon</a>, 2017</div>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/js/bootstrap.min.js'></script>
 

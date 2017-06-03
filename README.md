@@ -6,3 +6,5 @@ This repository houses projects for [Free Code Camp](https://www.freecodecamp.co
 	
 5/30/17 - Bug fixes for Javascript Calculator
 			Continued work on Pomodoro Clock
+			
+6/3/17 - Completed work on Pomodoro Clock
